@@ -1,4 +1,6 @@
+#HPC-BLAST
 --------------------------
+
 
 HPC-BLAST was designed to span the performance space of a heterogenous, Intel Xeon Phi, cluster.
 It has been optimized to run efficiently on a single Xeon Phi, a Single Xeon pair,
@@ -80,7 +82,9 @@ Authors
 -------
 
 Shane E. Sawyer
+
 Mitchel D. Horton
+
 Chad Burdyshaw
 
 
@@ -89,7 +93,9 @@ Contact Information
 -------------------
 
 R. Glenn Brook 
+
 glenn-brook@tennessee.edu
+
 JICS, University of Tennessee
 
 
