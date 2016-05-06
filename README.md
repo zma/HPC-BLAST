@@ -1,5 +1,4 @@
 #HPC-BLAST
---------------------------
 
 
 HPC-BLAST was designed to span the performance space of a heterogenous, Intel Xeon Phi, cluster.
