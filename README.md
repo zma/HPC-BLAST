@@ -68,7 +68,7 @@ partition both the database and the query file at the thead level.
 To the best of our knowledge, we are the first to implement a distributed, NCBI compliant,
 BLAST+ (C++ toolkit) code, for Intel Xeon Phi clusters.
 
-Best results to date indicate that HPC-BLAST runs approximately 40% faster for blastn 
+Best results to date indicate that HPC-BLAST runs  approximately 40% faster for blastn 
 and 45% faster for blastp than NCBI BLAST+ on Intel Xeon processors and around 773% 
 faster for blastn and 225% for blastp than NCBI BLAST+ on Intel Xeon Phi coprocessors. 
 HPC-BLAST also demonstrates near constant 90% parallel efficiency with respect to weak scaling 
