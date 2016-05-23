@@ -14,6 +14,7 @@ showing how to install and run HPC-BLAST and the auxiliary tools associated with
 
 
 How to Get HPC-BLAST
+--------------------
 
 For the most up-to-date version of HPC-BLAST,
 and associated auxiliary tools, we recommend that you
@@ -21,7 +22,7 @@ download from our Git repository. This can be accomplished via
 cloning the repository from the command line, or by downloading a zip
 from our GitHub page.
 
-Git Repository Clone:
+### Git Repository Clone:
 
   Use the following command to clone HPC-BLAST to your machine:
 
@@ -31,7 +32,7 @@ Git Repository Clone:
    
   >$ git pull
 
-Git Zip Download:
+### Git Zip Download:
     
   Simply use the "Download Zip" option on our webpage at:
     
@@ -40,6 +41,8 @@ Git Zip Download:
 
 
 Installation and Usage
+----------------------
+
 
 Installation and usage is covered in detail in: 
 
@@ -48,6 +51,7 @@ HPC-BLAST-User-Manual.pdf. in this repository.
 
 
 Advanced Usage
+--------------
 
 Tuning HPC-BLAST is covered in detail in:
 
@@ -56,6 +60,8 @@ HPC-BLAST-Best-Practices.pdf, in this repository.
 
 
 HPC-BLAST
+=========
+
 
 HPC-BLAST uses the message passing interface (MPI) to partition both the database and 
 the query file roughly at the node level, and OpenMP to further 
@@ -74,6 +80,7 @@ offers substantial performance improvements over NCBI BLAST+ on highly parallel 
 
 
 Authors
+-------
 
 Shane E. Sawyer
 
@@ -84,6 +91,7 @@ Chad Burdyshaw
 
 
 Contact Information
+-------------------
 
 R. Glenn Brook 
 
