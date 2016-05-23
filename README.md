@@ -60,7 +60,7 @@ HPC-BLAST-Best-Practices.pdf, in this repository.
 
 
 HPC-BLAST
-=========
+---------
 
 
 HPC-BLAST uses the message passing interface (MPI) to partition both the database and 
