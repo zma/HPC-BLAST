@@ -1,9 +1,9 @@
 #HPC-BLAST
 
 
-HPC-BLAST was designed to span the performance space of a heterogenous, Intel Xeon Phi, cluster.
-It has been optimized to run efficiently on a single Xeon Phi, a Single Xeon pair,
-Multiple Xeon Phis on ther same node, both the Xeon pair and all the Xeon Phis on a single
+HPC-BLAST spans the performance space of a heterogenous, Intel Xeon Phi, cluster.
+It is optimized to run efficiently on a single Xeon Phi, a Single Xeon pair,
+Multiple Xeon Phis on the same node, both the Xeon pair and all the Xeon Phis on a single
 node, any number of Xeon Phis on any number of nodes, any number of Xeon pairs
 on any number of nodes, and on both any number of Xeon pairs and any number of
 Xeon Phis on any number of nodes.
