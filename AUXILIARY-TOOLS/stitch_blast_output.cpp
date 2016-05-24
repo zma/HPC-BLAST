@@ -1,3 +1,5 @@
+
+
 // Copyright 2016 UTK JICS AACE
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -250,6 +252,10 @@ int main(int argc, char* argv[])
     {
       std::ifstream job_input("job_params");
       job_input >> num_thread_groups >> num_team_leaders >> num_ranks_per_group >> num_replication_groups;
+
+num_thread_groups=1;
+num_team_leaders=1;
+
       job_input.close();
     }
   else
@@ -311,7 +317,8 @@ int main(int argc, char* argv[])
 		  
 		  if ( num_ranks_total > 1 )
 		    {
-		      g_rank = i*num_replication_groups + j;
+		      //g_rank = i*num_replication_groups + j;
+		      g_rank = i*num_ranks_per_group + j;
 		      sstm << input_file_name << "." << g_rank << "." << i << "." << j << "." << k << "." << l;
 		    }
 		  else
@@ -369,7 +376,8 @@ int main(int argc, char* argv[])
 
 		  if ( num_ranks_total > 1 )
 		    {
-		      g_rank = i*num_replication_groups + j;
+		      //g_rank = i*num_replication_groups + j;
+		      g_rank = i*num_ranks_per_group + j;
 		      sstm << input_file_name << "." << g_rank << "." << i << "." << j << "." << k << "." << l;
 		    }
 		  else
@@ -712,7 +720,7 @@ int main(int argc, char* argv[])
 	epilogue[pos] = '\0';
       }
 
-    for ( pos=0; pos < BUFF_SIZE; ++pos )
+    for ( pos=0; (pos < BUFF_SIZE) && (pos < length); ++pos )
       {
 	// Find the offset position of the first instance of "Query=" since this will be the end of the prologue.
 	if ( buffer[pos] != 'Q' )
@@ -733,7 +741,12 @@ int main(int argc, char* argv[])
 	exit(1);
       }
 
-    for ( pos=(length-BUFF_SIZE); pos < (length-10); ++pos )
+int start_position=pos;
+if (length>BUFF_SIZE) {
+  start_position=length-BUFF_SIZE;
+}
+
+    for ( pos=start_position; pos < (length-10); ++pos )
       {
 	if ( strncmp( &(buffer[pos]), "  Database", 10 ) == 0 )
 	  {
