@@ -100,3 +100,13 @@ glenn-brook@tennessee.edu
 JICS, University of Tennessee
 
 
+
+License
+-------
+
+This offering is licensed under the Apache License, Version 2.0 (the "License");
+you may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Or, you can read the LICENSE file included in this repository.
