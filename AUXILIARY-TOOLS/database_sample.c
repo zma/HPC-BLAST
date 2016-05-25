@@ -1,18 +1,3 @@
-// Copyright 2016 UTK JICS AACE
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-
 //=============================================================
 // 
 //  main.C
@@ -92,9 +77,13 @@ int main(int argcs, char* pArgs[])
 
   char * line_ptr = NULL;
 
-  const uint64_t MAX_HEADER_LENGTH = 1024;
+  const uint64_t MAX_HEADER_LENGTH = 60000;//ceb This had to be altered to avoid header clipping. Can we make this a dynamic value?
+  uint64_t init_seq_limit = 500000;//ceb upper limit?
+  uint64_t init_seq_length = 2500;//ceb upper limit?
+
   const uint64_t ymax = 100;
-  const uint64_t SAMPLE_SIZE = 50;
+  const uint64_t SAMPLE_SIZE = 50;//initial default
+
 
   char ** db_seq = NULL;
   char ** seq_headers = NULL;
@@ -257,17 +246,16 @@ int main(int argcs, char* pArgs[])
 
   // Initialize the database array to have 50,000 sequences each with an intial length of 250.
   printf("Initialize the sequence array... ");
-
   num_seq_alloc = 50000;
-  db_seq = (char**) malloc( 50000 * sizeof(char*));
+  db_seq = (char**) malloc( init_seq_limit * sizeof(char*));
 
   if ( db_seq == NULL )
     {  printf("\nError: Could not allocate db_seq.\n");  exit(1);  }
 
-  for ( i=0; i < 50000; ++i )
+  for ( i=0; i < init_seq_limit; ++i )
     {
       db_seq[i] = NULL;
-      db_seq[i] = (char*) malloc( 250 * sizeof(char) );
+      db_seq[i] = (char*) malloc( init_seq_length * sizeof(char) );
       if ( db_seq[i] == NULL )
 	{  printf("\nError: Could not allocate db_seq[%llu].\n",i);  exit(1);  }
     }
@@ -277,12 +265,12 @@ int main(int argcs, char* pArgs[])
   // Initialize the headers for the database sequences.
   printf("Initialize the sequence header array... ");
 
-  seq_headers = (char**) malloc( 50000 * sizeof(char*));
+  seq_headers = (char**) malloc( init_seq_limit * sizeof(char*));
 
   if ( seq_headers == NULL )
     {  printf("\nError: Could not allocate seq_headers.\n");  exit(1);  }
 
-  for ( i=0; i < 50000; ++i )
+  for ( i=0; i < init_seq_limit; ++i )
     {
       seq_headers[i] = NULL;
       seq_headers[i] = (char*) malloc( MAX_HEADER_LENGTH * sizeof(char) );
@@ -295,14 +283,14 @@ int main(int argcs, char* pArgs[])
   // Initialize the allocated length of the database sequences.
   printf("Initialize the sequence allocated length array... ");
 
-  seq_alloc = (uint64_t*) malloc( 50000 * sizeof(uint64_t));
+  seq_alloc = (uint64_t*) malloc( init_seq_limit * sizeof(uint64_t));
 
   if ( seq_alloc == NULL )
     {  printf("\nError: Could not allocate seq_alloc.\n");  exit(1);  }
 
-  for ( i=0 ; i < 50000; ++i )
+  for ( i=0 ; i < init_seq_limit; ++i )
     {
-      seq_alloc[i] = 250;
+      seq_alloc[i] = init_seq_length;
     }
 
   printf("Done\n");
@@ -310,12 +298,12 @@ int main(int argcs, char* pArgs[])
   // Initialize the sequence length of the database sequences.
   printf("Initialize the sequence length array... ");
 
-  seq_len = (uint64_t*) malloc( 50000 * sizeof(uint64_t));
+  seq_len = (uint64_t*) malloc( init_seq_limit * sizeof(uint64_t));
 
   if ( seq_len == NULL )
     {  printf("\nError: Could not allocate seq_len.\n");  exit(1);  }
 
-  for ( i=0 ; i < 50000; ++i )
+  for ( i=0 ; i < init_seq_limit; ++i )
     {
       seq_len[i] = 0;
     }
@@ -342,16 +330,16 @@ int main(int argcs, char* pArgs[])
 	  // Check that there is enough memory. Allocate more if needed.
 	  if ( current_seq >= num_seq_alloc )
 	    {
-	      num_seq_alloc += (uint64_t)50000;
+	      num_seq_alloc += (uint64_t)init_seq_limit;
 
 	      db_seq = (char**) realloc( (void*) db_seq, num_seq_alloc * sizeof(char*) );
 	      if ( db_seq == NULL )
 		{  printf("Error: Reallocation of db_seq failed.\n");  exit(1);  }
 
-	      for ( i=(num_seq_alloc-50000); i < num_seq_alloc; ++i )
+	      for ( i=(num_seq_alloc-init_seq_limit); i < num_seq_alloc; ++i )
 		{
 		  db_seq[i] = NULL;
-		  db_seq[i] = (char*) malloc( 250 * sizeof(char) );
+		  db_seq[i] = (char*) malloc( init_seq_length * sizeof(char) );
 		  if ( db_seq[i] == NULL )
 		    {  printf("\nError: Could not allocate db_seq[%llu].\n",i);  exit(1);  }
 		}
@@ -360,7 +348,7 @@ int main(int argcs, char* pArgs[])
 	      if ( seq_headers == NULL )
 		{  printf("Error: Reallocation of seq_headers failed.\n");  exit(1);  }
 
-	      for ( i=(num_seq_alloc-50000); i < num_seq_alloc; ++i )
+	      for ( i=(num_seq_alloc-init_seq_limit); i < num_seq_alloc; ++i )
 		{
 		  seq_headers[i] = NULL;
 		  seq_headers[i] = (char*) malloc( MAX_HEADER_LENGTH * sizeof(char) );
@@ -372,35 +360,39 @@ int main(int argcs, char* pArgs[])
 	      if ( seq_alloc == NULL )
 		{  printf("Error: Could not reallocate seq_alloc.\n");  exit(1);  }
 
-	      for ( i=(num_seq_alloc-50000); i < num_seq_alloc; ++i )
-		{  seq_alloc[i] = 250; }
+	      for ( i=(num_seq_alloc-init_seq_limit); i < num_seq_alloc; ++i )
+		{  seq_alloc[i] = init_seq_length; }
 	      
 	      seq_len = (uint64_t*) realloc( (void*) seq_len, num_seq_alloc * sizeof(uint64_t) );
 	      if ( seq_len == NULL )
 		{  printf("Error: Could not reallocate seq_len.\n");  exit(1);  }
 
-	      for ( i=(num_seq_alloc-50000); i < num_seq_alloc; ++i )
+	      for ( i=(num_seq_alloc-init_seq_limit); i < num_seq_alloc; ++i )
 		{  seq_len[i] = 0; }
 	    }
 
 	  // check that we got a new line character.
+	  // First new line denotes end of header section
 	  got_newline = 0;
 	  for ( i=0; i < MAX_HEADER_LENGTH; ++i )
-	    {
-	      if ( line[i] == '\n' )
-		got_newline = 1;
-	    }
+	  {
+	    if(line[i]=='\n'){
+              got_newline=1;
+              break;//ceb
+            }
+	  }
 
 	  // Copy the header information.
+	  // Also copies extra characters beyond header
 	  strncpy( seq_headers[current_seq], line, MAX_HEADER_LENGTH-1 );
 
 	  current_space = MAX_HEADER_LENGTH;
 
+          //If newline has not yet been read, get additional string segment and continue search
 	  while ( !got_newline )
 	    {
 	      // Grab the next line
 	      line_ptr = fgets( line, MAX_HEADER_LENGTH-1, fasta_db_in );
-	      
 
 	      // Allocate more space
 	      seq_headers[current_seq] = (char*)realloc( (void*)seq_headers[current_seq], current_space+MAX_HEADER_LENGTH);
@@ -410,28 +402,37 @@ int main(int argcs, char* pArgs[])
 
 	      current_space += MAX_HEADER_LENGTH;
 
+              //Loop over new segment and search for first newline character
 	      for ( i=0; i < MAX_HEADER_LENGTH; ++i )
 		{
-		  if ( line[i] == '\n' )
+		  if ( line[i] == '\n' ){
 		    got_newline = 1;
+                    break;//ceb
+                  }
 		}
 	    }
+
 	}
-      else
-	{
+      //Not a new sequence. Continue reading line until end of sequence is vound
+      else 	
+        {
 	  // Any other line should have nucleotides or amino acids on it. Put them into the sequence array.
 	  line_length = strlen(line);
 
 	  seq_length = line_length;
 
+          //Traverse sequence string until we encounter a newline character
+          //Looking for end of sequence 
 	  for ( i=0; i < MAX_HEADER_LENGTH; ++i )
 	    {
-	      if ( line[i] == '\n' )
+	      if ( line[i] == '\n' ){
 		seq_length = i;
+                break;//ceb
+              }
 	    }
 
 	  if ( seq_length > line_length )
-	    seq_length = line_length;
+	    {seq_length = line_length;}
 	  
 	  // check that we got a new line character.
 	  got_newline = 0;
@@ -457,22 +458,27 @@ int main(int argcs, char* pArgs[])
 	      // End of the sequence?
 	      for ( i=0; i < MAX_HEADER_LENGTH; ++i )
 		{
-		  if ( line[i] == '\n' )
+		  if ( line[i] == '\n' ){
 		    got_newline = 1;
+                    break;//ceb
+                  }
 		}
 
+              //End not found, get new string segment
 	      if ( !got_newline )
 		{
 		  line_ptr = fgets( line, MAX_HEADER_LENGTH-1, fasta_db_in );
 		 
 		  for ( i=0; i < MAX_HEADER_LENGTH; ++i )
 		    {
-		      if ( line[i] == '\n' )
+		      if ( line[i] == '\n' ){
 			seq_length = i;
+                        break;//ceb
+                      }
 		    }
 
 		  if ( seq_length > line_length )
-		    seq_length = line_length;
+		    {seq_length = line_length;}
 		}
 	    }
 	}
