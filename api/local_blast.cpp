@@ -14,7 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-`
+
 #ifndef SKIP_DOXYGEN_PROCESSING
 static char const rcsid[] =
     "$Id: local_blast.cpp 465306 2015-04-20 16:55:25Z ivanov $";
