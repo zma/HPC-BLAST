@@ -128,7 +128,7 @@ group.  Thus, we specify a distribution of 120 thread groups, 1 team leader per 
 
 \section{HPC-BLAST and Tools Source Location} \label{sec:src}
 
-For the most up-to-date version of HSP-BLAST, 
+For the most up-to-date version of HPC-BLAST, 
 and associated auxiliary tools we recommend that you
 download from our Git repository. This can be accomplished via
 cloning the repository from the command line, or by downloading a zip
@@ -137,8 +137,8 @@ from our GitHub page.
 \begin{itemize}
   \item Git Repository Clone:
   \begin{itemize}
-    \item Use the following command to clone HSP-BLAST to your machine:
-      \item \verb|>$ git clone https://github.com/aace/HSP-BLAST.git|
+    \item Use the following command to clone HPC-BLAST to your machine:
+      \item \verb|>$ git clone https://github.com/aace/HPC-BLAST.git|
       \item Once cloned, you can update the code to the newest version using the following command (when in the HPC-BLAST directory):
       \item \verb|>$ git pull|
     \end{itemize}
@@ -162,26 +162,13 @@ from our GitHub page.
 \end{verbatim}
 
 \noindent The list of files needed for the auxiliary tools are: \emph{database\textunderscore sample.c}, \emph{distribute\textunderscore queries.cpp}, \emph{get\textunderscore query\textunderscore stats.c}, \emph{stitch\textunderscore blast\textunderscore output.cpp}, \emph{strip\textunderscore header.c},
-\emph{compare\textunderscore results.c}, \emph{SFMT.c}, \emph{SFMT-sse2.h}, \emph{SFMT-params.h}, emph{SFMT-params607.h}, and \emph{compile.dat}.  The \emph{compile.dat} file is a plain text file that contains instructions on how to build the \emph{database\textunderscore sample}
+\emph{compare\textunderscore results.c}, \emph{SFMT.c}, \emph{SFMT-sse2.h}, \emph{SFMT-params.h}, \emph{SFMT-params607.h}, and \emph{compile.dat}.  The \emph{compile.dat} file is a plain text file that contains instructions on how to build the \emph{database\textunderscore sample}
 and \emph{stitch\textunderscore output} binaries.  The files for the remaining binaries ( \emph{distribute\textunderscore queries},  \emph{get\textunderscore query\textunderscore stats}, and \emph{strip\textunderscore header.c} ) may be compiled without any special instructions.  For example,
 you may compile on the command line with:
 \begin{verbatim}
 $> gcc -O2 strip_header.c -o strip_header
 \end{verbatim}
 
-There are also files that are needed to build HPC-BLAST contained in the GitHub repository.  First, there is the \emph{blast\textunderscore options\textunderscore handle.cpp} file which has been modified to work with HPC-BLAST and is located at
-\begin{verbatim}
-/PATH/TO/REPO/api
-\end{verbatim}
-\noindent Here, \verb^??^ refers to the specific release of the NCBI toolkit and may be one of %28, 29, or 30
-28, 29, 30, or 31.  The other files are \emph{hpc\textunderscore blastp\textunderscore app.cpp}, \emph{hpc\textunderscore blastn\textunderscore app.cpp}, \emph{Makefile.in},
-\emph{Makefile.hpc\textunderscore blastp.app}, and \emph{Makefile.hpc\textunderscore blastn.app}.
-These files are located in
-\begin{verbatim}
-/PATH/TO/REPO/blast
-\end{verbatim}
-
-%\noindent {\bf NOTE:  Access to the AACE SVN repository is subject to access permissions.  As such, the User Manual may not reflect where the code for HPC-BLAST may be found for general users.}
 
 \clearpage
 
@@ -193,31 +180,27 @@ may be possible, but have not been tested.\\
 
 \noindent {\bf NOTE:  In order to compile NCBI BLAST, and by extension HPC-BLAST for the Xeon Phi, BLAST must first be compiled for the host processor, at least once.}
 
-\subsection{Compiling NCBI BLAST v2.2.28-2.2.31} \label{ssec:ncbi-compile}
+\subsection{Compiling NCBI BLAST v2.31} \label{ssec:ncbi-compile}
 
 \subsubsection{Compiling for the Host} \label{sssec:ncbi-host}
 First, NCBI BLAST will be built for the host processor.  We may retrieve the NCBI BLAST source tar ball from the command line using:
 \begin{verbatim}
-$> wget ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.2.XX/ncbi-blast-2.2.XX+-src.tar.gz
+$> wget ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.2.31/ncbi-blast-2.2.31+-src.tar.gz
 \end{verbatim}
-\noindent Here, \verb^XX^ refers to the specific build version; one of 28, 29, 30, or 31.  Now, uncompress the tar file:
+Now, uncompress the tar file:
 \begin{verbatim}
-$> tar xvzf ncbi-blast-2.2.XX+-src.tar.gz
+$> tar xvzf ncbi-blast-2.2.31+-src.tar.gz
 \end{verbatim}
 \noindent and enter the top level directory of the toolkit:
 \begin{verbatim}
-$> cd ncbi-blast-2.2.XX+-src/c++
+$> cd ncbi-blast-2.2.31+-src/c++
 \end{verbatim}
-\noindent Next, we copy the files for HPC-BLAST into the appropriate directories of the NCBI BLAST toolkit.  Recall, the HPC-BLAST file locations were discussed in Chapter \ref{sec:src}.  For simplicity, we will assume that a local copy of the
-GitHub repository is available for copying the files.  First, we copy the \emph{blast\textunderscore options\textunderscore handle.cpp} file:
+\noindent Next, we copy the files for HPC-BLAST into the appropriate directories of the NCBI BLAST toolkit.  
+For simplicity, we will assume that a local copy of the
+GitHub repository is available for copying the files.  
 \footnotesize
 \begin{verbatim}
 $> cp /PATH/TO/REPO/api/blast_options_handle.cpp src/algo/blast/api
-\end{verbatim}
-\normalsize
-\noindent Now, we copy the remaining HPC-BLAST files:
-\footnotesize
-\begin{verbatim}
 $> cp /PATH/TO/REPO/include/local_blast.hpp include/algo/blast/api
 $> cp /PATH/TO/REPO/include/prelim_stage.hpp include/algo/blast/api
 $> cp /PATH/TO/REPO/include/traceback_stage.hpp include/algo/blast/api
@@ -236,15 +219,14 @@ $> cp /PATH/TO/REPO/blast/Makefile.in src/app/blast
 
 \noindent \rule{16cm}{0.4pt}
 
-\noindent {\bf NOTE:  The following directions are for versions 2.2.29-31.}\\
 \noindent Before beginning the compilation, there are two source code modifications that need to be made to ensure working binaries.  The first modification is to the \verb^BLAST_GetGappedScore^ function in the file:
 \begin{verbatim}
-/PATH/TO/ncbi-blast-2.2.YY+-src/c++/src/algo/blast/core/blast_gapalign.c
+/PATH/TO/ncbi-blast-2.2.31+-src/c++/src/algo/blast/core/blast_gapalign.c
 \end{verbatim}
-\noindent where \verb^YY^ is either 29, 30, or 31. Just before the definition of the function, insert \verb^#pragma intel optimization_level 1^ (at line 3401).  This will force the Intel compiler to drop the optimization level to 1 for this function so that the
+Just before the definition of the function, insert \verb^#pragma intel optimization_level 1^ (at line 3401).  This will force the Intel compiler to drop the optimization level to 1 for this function so that the
 compiled binaries will operate correctly.  The second modification is to the file:
 \begin{verbatim}
-/PATH/TO/ncbi-blast-2.2.YY+-src/c++/include/corelib/ncbifloat.h
+/PATH/TO/ncbi-blast-2.2.31+-src/c++/include/corelib/ncbifloat.h
 \end{verbatim}
 \noindent Look for the line (line number 71):
 \begin{verbatim}
@@ -276,15 +258,9 @@ prepended with the compiler version.  Now, enter the build directory of the root
 \begin{verbatim}
 $> cd ROOT-DIR/build
 \end{verbatim}
-\noindent Next, the file \verb^Makefile.mk^ is to be edited. Depending on the version, the instructions are:
-\begin{itemize}
-\item {\bf 2.2.28} change the \verb^-O2^ flag on lines 90 and 91 corresponding to \verb^CONF_CFLAGS^ and \verb^CONF_CXXFLAGS^ to \verb^-O3^, \verb^-O^ to \verb^-O3^ on line 95 corresponding
+\noindent Next, the file \verb^Makefile.mk^ is to be edited. The instructions are:
+Cange the \verb^-O2^ flag on lines 93 and 94 corresponding to \verb^CONF_CFLAGS^ and \verb^CONF_CXXFLAGS^ to \verb^-O3^, \verb^-O^ to \verb^-O3^ on line 98 corresponding
 to \verb^CONF_LDFLAGS^
-\item {\bf 2.2.29} change the \verb^-O2^ flag on lines 92 and 93 corresponding to \verb^CONF_CFLAGS^ and \verb^CONF_CXXFLAGS^ to \verb^-O3^, \verb^-O^ to \verb^-O3^ on line 97 corresponding
-to \verb^CONF_LDFLAGS^
-\item {\bf 2.2.30-31} change the \verb^-O2^ flag on lines 93 and 94 corresponding to \verb^CONF_CFLAGS^ and \verb^CONF_CXXFLAGS^ to \verb^-O3^, \verb^-O^ to \verb^-O3^ on line 98 corresponding
-to \verb^CONF_LDFLAGS^
-\end{itemize}
 \noindent Now, the build process can begin with
 \begin{verbatim}
 $> make all_r
@@ -304,9 +280,9 @@ $> make -j8 -k all_r
 
 This section assumes that all the steps in \ref{sssec:ncbi-host} have been followed and the \verb^datatool^ binary has been successfully built.  First, enter into the \verb^c++^ directory of the top level source directory:
 \begin{verbatim}
-$> cd PATH/TO/ncbi-blast-2.2.XX+-src/c++
+$> cd PATH/TO/ncbi-blast-2.2.31+-src/c++
 \end{verbatim}
-\noindent where \verb^XX^ is one of 28, 29, 30, or 31. Set up the appropriate environment variables:
+Set up the appropriate environment variables:
 \begin{verbatim}
 $> export CC=mpiicc
 $> export CXX=mpiicpc
@@ -324,11 +300,7 @@ be sure to choose a different build directory for the Phi native compilation.  N
 $> cd ROOT-DIR-PHI/build
 \end{verbatim}
 \noindent Open \verb^Makefile.mk^ in a text editor.  Several lines will need to be changed in order to build for the Intel Xeon Phi.  Depending on the specific version of the toolkit, the edits are:
-\begin{itemize}
-\item {\bf 2.2.28} on lines 90 and 91, change the \verb^-O2^ flag to \verb^-O3 -mmic^, corresponding to variables \verb^CONF_CFLAGS^ and \verb^CONF_CXXFLAGS^; change line 95 from \verb^-O^ to \verb^-O3 -mmic^ for the \verb^CONF_LDFLAGS^ variable; replace \verb^-axW^ with \verb^-mmic^ on lines 217-219 corresponding to the \verb^FAST_CFLAGS^, \verb^FAST_CXXFLAGS^, and \verb^FAST_LDFLAGS^ variables
-\item {\bf 2.2.29} on lines 92 and 93, change the \verb^-O2^ flag to \verb^-O3 -mmic^, corresponding to variables \verb^CONF_CFLAGS^ and \verb^CONF_CXXFLAGS^; change line 97 from \verb^-O^ to \verb^-O3 -mmic^ for the \verb^CONF_LDFLAGS^ variable; replace \verb^-axSSSE3^ with \verb^-mmic^ on lines 219-221 corresponding to the \verb^FAST_CFLAGS^, \verb^FAST_CXXFLAGS^, and \verb^FAST_LDFLAGS^ variables
-\item {\bf 2.2.30-31} on lines 93 and 94, change the \verb^-O2^ flag to \verb^-O3 -mmic^, corresponding to variables \verb^CONF_CFLAGS^ and \verb^CONF_CXXFLAGS^; change line 98 from \verb^-O^ to \verb^-O3 -mmic^ for the \verb^CONF_LDFLAGS^ variable; replace \verb^-axSSSE3^ with \verb^-mmic^ on lines 220-222 corresponding to the \verb^FAST_CFLAGS^, \verb^FAST_CXXFLAGS^, and \verb^FAST_LDFLAGS^ variables
-\end{itemize}
+On lines 93 and 94, change the \verb^-O2^ flag to \verb^-O3 -mmic^, corresponding to variables \verb^CONF_CFLAGS^ and \verb^CONF_CXXFLAGS^; change line 98 from \verb^-O^ to \verb^-O3 -mmic^ for the \verb^CONF_LDFLAGS^ variable; replace \verb^-axSSSE3^ with \verb^-mmic^ on lines 220-222 corresponding to the \verb^FAST_CFLAGS^, \verb^FAST_CXXFLAGS^, and \verb^FAST_LDFLAGS^ variables
 \noindent Now, set the environment variable to point to the \verb^datatool^ created in the host build:
 \begin{verbatim}
 $> export NCBI_DATATOOL_PATH=/PATH/TO/DATATOOL/BINARY
@@ -678,7 +650,7 @@ in previous sections.
 \subsection{Running NCBI BLAST} \label{ssec:runncbi}
 
 This section describes the basic steps of executing a BLAST search using the NCBI implementation.  NCBI BLAST offers a large number of options and parameters that are not covered in this document. Refer to the NCBI website
-at \url{http://www.ncbi.nlm.nih.gov/books/NBK1763} for a more thorough introduction.  Since running BLAST is functionally equivalent on both the host and Phi architecture and the toolkit versions 2.2.28-2.2.31, unified examples are presented.
+at \url{http://www.ncbi.nlm.nih.gov/books/NBK1763} for a more thorough introduction.  Since running BLAST is functionally equivalent on both the host and Phi architecture and the toolkit version 2.2.31, unified examples are presented.
 It is assumed that both a BLAST formatted database and query file have been created.\\
 
 \noindent To run a protein search with NCBI BLAST, we can execute with:
