@@ -198,15 +198,15 @@ $> cd ncbi-blast-2.2.31+-src/c++
 \noindent Next, we copy the files for HPC-BLAST into the appropriate directories of the NCBI BLAST toolkit.  
 For simplicity, we will assume that a local copy of the
 GitHub repository is available for copying the files.  
+% $> cp /PATH/TO/REPO/include/prelim_stage.hpp include/algo/blast/api
+% $> cp /PATH/TO/REPO/api/prelim_stage.cpp src/algo/blast/api
 \footnotesize
 \begin{verbatim}
 $> cp /PATH/TO/REPO/api/blast_options_handle.cpp src/algo/blast/api
 $> cp /PATH/TO/REPO/include/local_blast.hpp include/algo/blast/api
-$> cp /PATH/TO/REPO/include/prelim_stage.hpp include/algo/blast/api
 $> cp /PATH/TO/REPO/include/traceback_stage.hpp include/algo/blast/api
 
 $> cp /PATH/TO/REPO/api/local_blast.cpp src/algo/blast/api
-$> cp /PATH/TO/REPO/api/prelim_stage.cpp src/algo/blast/api
 $> cp /PATH/TO/REPO/api/traceback_stage.cpp src/algo/blast/api
 
 $> cp /PATH/TO/REPO/blast/hpc_blastp_app.cpp src/app/blast
