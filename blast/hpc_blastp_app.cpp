@@ -230,8 +230,9 @@ private:
 bool fexists(const char *filename)
 {
   ifstream ifile(filename);
-  return ifile;
+  return ifile.good();
 };
+
 
 //ceb This function searches a file for n occurances of a given phrase.
 //    It returns the file position of the line following the 
